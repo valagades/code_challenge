@@ -27,7 +27,7 @@ import app.code.challenge.kosmosappchallenge.ui.model.Character
 @Composable
 fun CharacterScreenItem(character: Character) {
     val context = LocalContext.current
-    var showDetails by remember { mutableStateOf(false) }
+    var showDetails by remember { mutableStateOf(character.showDetails) }
 
     Card(
         modifier = Modifier
@@ -82,7 +82,7 @@ fun CharacterScreenItem(character: Character) {
                 Button(
                     onClick = {
                         character.showDetails = character.showDetails.not()
-                        showDetails = showDetails.not()
+                        showDetails = character.showDetails
                     },
                     modifier = Modifier.constrainAs(btnDetailRef, constrainBlock = {
                         top.linkTo(spriteRef.bottom, margin = 8.dp)
@@ -91,12 +91,12 @@ fun CharacterScreenItem(character: Character) {
                         width = Dimension.fillToConstraints
                     }),
                     content = {
-                        val textBtn = if (character.showDetails || showDetails) context.getString(R.string.hide_details) else context.getString(R.string.show_details)
+                        val textBtn = if (showDetails) context.getString(R.string.hide_details) else context.getString(R.string.show_details)
                         Text(text = textBtn)
                     }
                 )
 
-                if (character.showDetails || showDetails) {
+                if (showDetails) {
                     // Status
                     Text(
                         text = character.status,
